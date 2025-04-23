@@ -103,10 +103,10 @@ export default function Header() {
               Home
             </Link>
             <Link
-              to="/blogs"
+              to="/about"
               className="text-black font-medium hover:underline"
             >
-              Blogs
+              About
             </Link>
             <Link
               to="/contact"

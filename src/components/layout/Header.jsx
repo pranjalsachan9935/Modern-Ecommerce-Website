@@ -21,24 +21,28 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           <nav className="flex items-center gap-5">
             <Link
+              
               to="/"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               Home
             </Link>
             <Link
+              
               to="/about"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               About
             </Link>
             <Link
+              
               to="/contact"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               Contact
             </Link>
             <Link
+              
               to="/services"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
@@ -99,22 +103,29 @@ export default function Header() {
       {mobileNavOpen && (
         <div className=" md:hidden bg-white shadow-md p-4 space-y-3">
           <nav className="flex flex-col gap-3">
-            <Link to="/" className="text-black font-medium hover:underline">
+            <Link
+              to="/"
+              className="text-black font-medium hover:underline"
+              onClick={() => setMobileNavOpen(false)}
+            >
               Home
             </Link>
             <Link
+              onClick={() => setMobileNavOpen(false)}
               to="/about"
               className="text-black font-medium hover:underline"
             >
               About
             </Link>
             <Link
+              onClick={() => setMobileNavOpen(false)}
               to="/contact"
               className="text-black font-medium hover:underline"
             >
               Contact
             </Link>
             <Link
+              onClick={() => setMobileNavOpen(false)}
               to="/services"
               className="text-black font-medium hover:underline"
             >

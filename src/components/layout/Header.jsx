@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 
-export default function Header() {
+export default function Header({ setSearchTerm }) {
   const { cartCount } = useCart();
   const [open, setOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -21,28 +21,24 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           <nav className="flex items-center gap-5">
             <Link
-              
               to="/"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               Home
             </Link>
             <Link
-              
               to="/about"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               About
             </Link>
             <Link
-              
               to="/contact"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
               Contact
             </Link>
             <Link
-              
               to="/services"
               className="text-black/90 font-semibold hover:underline underline-offset-4"
             >
@@ -55,7 +51,8 @@ export default function Header() {
             <input
               type="text"
               placeholder="Search here..."
-              className="border-1 border-gray-800 rounded-full px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-black transition w-50"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-full px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-black w-full" // keep your styling
             />
             <Search className="absolute right-3 w-4 h-4 text-gray-500" />
           </div>

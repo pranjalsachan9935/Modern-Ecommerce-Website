@@ -12,8 +12,8 @@ import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import { CartProvider } from "./context/CartContext";
 
-
 const App = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const App = () => {
     <div>
       <CartProvider>
         <Router>
-          <Header />
+           <Header setSearchTerm={setSearchTerm} />
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage searchTerm={searchTerm} />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<Services />} />

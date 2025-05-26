@@ -12,8 +12,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart, ShoppingBag } from "lucide-react";
 
 import Categories from "../sections/Categories";
 import sneaker from "../../assets/sneakers.webp";
@@ -56,29 +55,30 @@ const initialProducts = [
   },
   {
     id: 5,
-    name: "Comfy Chair",
+    name: "Smart Phone",
     price: 125,
     discount: Math.floor(Math.random() * 31),
     image: chair,
   },
   {
     id: 6,
-    name: "Smart Phone",
+    name: "Comfy Chair",
     price: 90,
     discount: Math.floor(Math.random() * 31),
     image: phone,
   },
 ];
 
-export default function FeaturedProducts() {
-  const {addToCart} = useCart();
+export default function FeaturedProducts({ searchTerm = "" }) {
+  const { addToCart } = useCart();
   const containerRef = useRef(null);
+  const [sortBy, setSortBy] = useState("name");
 
   useEffect(() => {
     const cards = containerRef.current.querySelectorAll(".product-card");
-  
+
     gsap.set(cards, { opacity: 0, y: 0 });
-  
+
     ScrollTrigger.batch(cards, {
       onEnter: (batch) => {
         gsap.to(batch, {
@@ -93,9 +93,11 @@ export default function FeaturedProducts() {
       start: "top 85%",
     });
   }, []);
-  
 
-  const [sortBy, setSortBy] = useState("name");
+  // Filter and sort logic
+  const filteredProducts = initialProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const sortProducts = (products) => {
     if (sortBy === "name") {
@@ -106,7 +108,7 @@ export default function FeaturedProducts() {
     return products;
   };
 
-  const sortedProducts = sortProducts(initialProducts);
+  const sortedProducts = sortProducts(filteredProducts);
 
   return (
     <section className="py-5 px-4 bg-white">
@@ -132,46 +134,55 @@ export default function FeaturedProducts() {
         </DropdownMenu>
       </div>
 
-      <div
-        ref={containerRef}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-      >
-        {sortedProducts.map((product) => (
-          <Card
-            key={product.id}
-            className="product-card p-0 transition-transform duration-300 ease-in-out transform hover:scale-[1.01]"
-          >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-56 object-cover overflow-hidden rounded-t-lg"
-            />
-            <CardContent className="p-4">
-              <h4 className="font-semibold">{product.name}</h4>
-              <p className="text-gray-800 font-semibold">
-                ${product.price}
-                <span className="text-red-500 text-sm font-normal pl-2">
-                  ({product.discount}% OFF)
-                </span>
-              </p>
+      {sortedProducts.length === 0 ? (
+        <div className="flex justify-center items-center h-64 text-gray-500 text-lg font-semibold">
+          No result found
+        </div>
+      ) : (
+        <div
+          ref={containerRef}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+        >
+          {sortedProducts.map((product) => (
+            <Card
+              key={product.id}
+              className="product-card p-0 transition-transform duration-300 ease-in-out transform hover:scale-[1.01]"
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-56 object-cover overflow-hidden rounded-t-lg"
+              />
+              <CardContent className="p-4">
+                <h4 className="font-semibold">{product.name}</h4>
+                <p className="text-gray-800 font-semibold">
+                  ${product.price}
+                  <span className="text-red-500 text-sm font-normal pl-2">
+                    ({product.discount}% OFF)
+                  </span>
+                </p>
 
-              <div className="flex flex-col justify-center gap-3 my-2">
-                <Button onClick={()=> addToCart(product)} className="flex items-center gap-2 justify-center w-full sm:w-auto active:scale-95">
-                  <ShoppingCart className="h-4 w-4" />
-                  Add to cart
-                </Button>
-                <Button
-                  className="flex items-center gap-2 justify-center w-full sm:w-auto active:scale-95"
-                  variant="outline"
-                >
-                  <ShoppingBag className="h-4 w-4" />
-                  Buy Now
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                <div className="flex flex-col justify-center gap-3 my-2">
+                  <Button
+                    onClick={() => addToCart(product)}
+                    className="flex items-center gap-2 justify-center w-full sm:w-auto active:scale-95"
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                    Add to cart
+                  </Button>
+                  <Button
+                    className="flex items-center gap-2 justify-center w-full sm:w-auto active:scale-95"
+                    variant="outline"
+                  >
+                    <ShoppingBag className="h-4 w-4" />
+                    Buy Now
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
